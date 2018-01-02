@@ -1,0 +1,22 @@
+//**********************  Python 安装 **********************//
+	1、mac，linux 自带python
+	2、安装pip
+		在home-brew中，pip的安装是跟python一起的，所以我们用easy_install安装
+		sudo easy_install pip
+
+	3、安装 beautifulsoup4
+		sudo pip install beautifulsoup4
+	4、安装ipython 
+		1、sudo pip install ipython 
+
+		2、进入python 环境  python -m IPython 
+	5、安装msyql插件
+		sudo pip install mysql-python
+		import MySQLdb;
+
+
+
+
+//**********************  打包发布 **********************//
+	1、pyinstaller
+		安装  pip install pyinstaller 来安装pyinstaller
