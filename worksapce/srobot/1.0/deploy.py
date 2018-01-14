@@ -1,8 +1,23 @@
 #coding=utf-8;
 import os,sys,platform
 
+CONTOS6 = '6'
+CONTOS7 = '7'
+#获取系统版本
+def get_version():
+	system = platform.dist()
+	if system[1].startswith(CONTOS6):
+		version = CONTOS6
+	elif system[1].startswith(CONTOS7):
+		version = CONTOS7
+	else:
+		version = CONTOS6
+	return version
+#设置当前系统版本
+version = get_version()
+
 #创建路径
-def buildPath():
+def build_path():
 	cmd = 'mkdir -p /root/srobot/jar'
 	res = os.system(cmd)
 	if res == 0:
@@ -18,17 +33,18 @@ def buildPath():
 		print '目录创建失败'
 
 #安装wget
-def installWget():
+def install_wget():
 	if os.system('yum -y install wget') == 0:
 		print 'wget 安装成功'
 	else:
 		print 'wget 操作异常'
 
 #安装jdk 8
-def installJdk():
+def install_jdk():
 	#有些时候jdk 的名字可能不一样，所有安装好jdk 后需要检查确认
 	#jdkname = 'java-1.8.0-openjdk-devel.x86_64'
 	jdkname = 'java-1.8.0-openjdk-devel-debug.x86_64'
+
 	cmd  = 'yum -y install '+jdkname
 	res  = os.system(cmd)
 	if res == 0:
@@ -37,14 +53,15 @@ def installJdk():
 		print 'jdk 安装失败'
 
 #安装mysql数据库
-def installMysql():
-	#安装mysql yum 源
-	cmd = 'rpm -Uvh http://repo.mysql.com/mysql-community-release-el6-5.noarch.rpm'
-	res = os.system(cmd)
-	if res == 0:
-		print 'mysql yum源 安装成功'
-	else:
-		print 'mysql yum源 安装失败'
+def install_mysql():
+	#centos6.x 需要安装mysql yum 源
+	if version == CONTOS6:
+		cmd = 'rpm -Uvh http://repo.mysql.com/mysql-community-release-el6-5.noarch.rpm'
+		res = os.system(cmd)
+		if res == 0:
+			print 'mysql yum源 安装成功'
+		else:
+			print 'mysql yum源 安装失败'
 
 	#安装数据库
 	cmd = 'yum -y install mysql-community-server.x86_64'
@@ -79,12 +96,12 @@ def installMysql():
 
 	
 #添加初始化数据(暂时不做处理)
-def installInitMysql():
+def install_init_mysql():
 	print '初始化数据 暂时不做任何处理'
 	pass
 
 #下载、解压备份shell
-def installMysqlBackup():
+def install_mysql_backup():
 	cmd = 'wget -P /home/www/ http://srobot.oss-cn-hangzhou.aliyuncs.com/deploy/backup.gz'
 	res = os.system(cmd)
 	if res != 0:
@@ -117,14 +134,15 @@ def installMysqlBackup():
 		print '定时备份开机启动设置失败'
 
 #安装Nginx
-def installNginx():
-	#安装nginx yum 源
-	cmd = 'yum -y install http://nginx.org/packages/centos/6/noarch/RPMS/nginx-release-centos-6-0.el6.ngx.noarch.rpm'
-	res = os.system(cmd)
-	if res == 0:
-		print 'ngixn yum源 安装成功'
-	else:
-		print 'ngixn yum源 安装失败'
+def install_nginx():
+	# centos6.x 需要安装nginx yum 源
+	if version == CONTOS6:
+		cmd = 'yum -y install http://nginx.org/packages/centos/6/noarch/RPMS/nginx-release-centos-6-0.el6.ngx.noarch.rpm'
+		res = os.system(cmd)
+		if res == 0:
+			print 'ngixn yum源 安装成功'
+		else:
+			print 'ngixn yum源 安装失败'
 
 	#安装数据库
 	cmd = 'yum -y install nginx.x86_64'
@@ -158,16 +176,15 @@ def installNginx():
 
 #安装FFmpeg
 #centos7 
-def installFFmpeg():
+def install_ffmpeg():
 	#下载 dag.repo
-	system = platform.dist()
-	cmd = ''
-	if system[1].startswith('6.'):
+	if version == CONTOS6:
 		cmd = 'wget -P /etc/yum.repos.d http://srobot.oss-cn-hangzhou.aliyuncs.com/deploy/dag.repo';
-	elif system[1].startswith('7.'):
+	elif version == CONTOS7:
 		cmd = 'rpm -Uvh http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-1.el7.nux.noarch.rpm'
 	else:
 		pass
+
 	res = os.system(cmd)
 	if res != 0:
 		print 'FFmpeg yum源安装失败'
@@ -196,7 +213,7 @@ def installFFmpeg():
 		print '解压失败'
 
 #安装zip和unzip
-def installZipAndUnzip():
+def install_zip_unzip():
 	cmd = 'yum -y install zip unzip'
 	res = os.system(cmd)
 	if res == 0:
@@ -205,7 +222,7 @@ def installZipAndUnzip():
 		print 'zip and unzip 安装失败'
 
 #安装文件上传、下载创建
-def installRzAndSz():
+def install_rz_sz():
 	cmd = 'yum install -y lrzsz'
 	res = os.system(cmd)
 	if res == 0:
@@ -215,19 +232,19 @@ def installRzAndSz():
 
 #初始化
 def install():
-	buildPath()				#创建路径
-	installWget()			#安装wget
-	installJdk()			#安装jdk
+	build_path()			#创建路径
+	install_wget()			#安装wget
+	install_jdk()			#安装jdk
 
-	installMysql()			#安装mysql
-	installInitMysql()		#初始化mysql数据库
-	installMysqlBackup()	#添加msyql备份任务
+	#install_mysql()		#安装mysql
+	#install_init_mysql()	#初始化mysql数据库
+	#install_mysql_backup()	#添加msyql备份任务
 
-	installNginx()			#安装nginx
+	install_nginx()			#安装nginx
 
-	installZipAndUnzip()	#安装zip and unzip
-	installFFmpeg()			#安装FFmpeg
-	installRzAndSz()		#安装rz and sz
+	install_zip_unzip()		#安装zip and unzip
+	install_ffmpeg()		#安装FFmpeg
+	install_rz_sz()			#安装rz and sz
 
 
 if __name__ == '__main__':
