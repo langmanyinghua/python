@@ -75,18 +75,13 @@ def get_config_show():
 def get_config_test():
 	config = {
 		'env'			:	'dev',
-		'crawler_url'	:	'http://srobot.oss-cn-hangzhou.aliyuncs.com/hg/v1/crawler-1.0-SNAPSHOT.jar',
-		'manager_url'	:	'http://srobot.oss-cn-hangzhou.aliyuncs.com/hg/v1/manager-1.0-SNAPSHOT.jar',
+		'crawler_url'	:	'',#http://srobot.oss-cn-hangzhou.aliyuncs.com/hg/v1/crawler-1.0-SNAPSHOT.jar
+		'manager_url'	:	'',#http://srobot.oss-cn-hangzhou.aliyuncs.com/hg/v1/manager-1.0-SNAPSHOT.jar
 		'web_url'		:	'http://srobot.oss-cn-hangzhou.aliyuncs.com/hg/v1/web-1.0-SNAPSHOT.jar',
 		'html_url'		:	'http://srobot.oss-cn-hangzhou.aliyuncs.com/hg/v1/admin.zip',
 		'server'		:	[
 			{
-				'hostname'	:	'192.168.31.112',
-				'username'	:	'root',
-				'password'	:	'123456'
-			},
-			{
-				'hostname'	:	'192.168.31.194',
+				'hostname'	:	'192.168.31.101',
 				'username'	:	'root',
 				'password'	:	'123456'
 			}
@@ -96,7 +91,7 @@ def get_config_test():
 
 #开始执行
 def main():
-	config = get_config_hg()
+	config = get_config_test()
 	#初始化服务器
 	#deploy.main(config)
 	#更新服务器
