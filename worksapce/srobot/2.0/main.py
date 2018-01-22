@@ -8,7 +8,8 @@ def get_config_hg():
 		'env'			:	'prod-hg',
 		'crawler_url'	:	'http://srobot.oss-cn-hangzhou.aliyuncs.com/hg/v3/crawler-1.0-SNAPSHOT.jar',
 		'manager_url'	:	'http://srobot.oss-cn-hangzhou.aliyuncs.com/hg/v3/manager-1.0-SNAPSHOT.jar',
-		'web_url'		:	'http://srobot.oss-cn-hangzhou.aliyuncs.com/hg/v3/web-1.0-SNAPSHOT.jar',
+		'server_url'	:	'',
+		'web_url'		:	'',
 		'html_url'		:	'http://srobot.oss-cn-hangzhou.aliyuncs.com/hg/v3/admin.zip',
 		'server'		:	[
 			{
@@ -41,7 +42,8 @@ def get_config_cmb():
 		'env'			:	'prod',
 		'crawler_url'	:	'http://srobot.oss-cn-hangzhou.aliyuncs.com/hg/v3/crawler-1.0-SNAPSHOT.jar',
 		'manager_url'	:	'http://srobot.oss-cn-hangzhou.aliyuncs.com/hg/v3/manager-1.0-SNAPSHOT.jar',
-		'web_url'		:	'http://srobot.oss-cn-hangzhou.aliyuncs.com/hg/v3/web-1.0-SNAPSHOT.jar',
+		'server_url'	:	'',
+		'web_url'		:	'',
 		'html_url'		:	'http://srobot.oss-cn-hangzhou.aliyuncs.com/hg/v3/admin.zip',
 		'server'		:	[
 			{
@@ -59,7 +61,8 @@ def get_config_show():
 		'env'			:	'prod-show',
 		'crawler_url'	:	'http://srobot.oss-cn-hangzhou.aliyuncs.com/hg/v3/crawler-1.0-SNAPSHOT.jar',
 		'manager_url'	:	'http://srobot.oss-cn-hangzhou.aliyuncs.com/hg/v3/manager-1.0-SNAPSHOT.jar',
-		'web_url'		:	'http://srobot.oss-cn-hangzhou.aliyuncs.com/hg/v3/web-1.0-SNAPSHOT.jar',
+		'server_url'	:	'',
+		'web_url'		:	'',
 		'html_url'		:	'http://srobot.oss-cn-hangzhou.aliyuncs.com/hg/v3/admin.zip',
 		'server'		:	[
 			{
@@ -77,7 +80,8 @@ def get_config_test():
 		'env'			:	'dev',
 		'crawler_url'	:	'',#http://srobot.oss-cn-hangzhou.aliyuncs.com/hg/v1/crawler-1.0-SNAPSHOT.jar
 		'manager_url'	:	'',#http://srobot.oss-cn-hangzhou.aliyuncs.com/hg/v1/manager-1.0-SNAPSHOT.jar
-		'web_url'		:	'http://srobot.oss-cn-hangzhou.aliyuncs.com/hg/v1/web-1.0-SNAPSHOT.jar',
+		'server_url'	:	'',
+		'web_url'		:	'',
 		'html_url'		:	'http://srobot.oss-cn-hangzhou.aliyuncs.com/hg/v1/admin.zip',
 		'server'		:	[
 			{

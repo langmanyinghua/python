@@ -7,3 +7,5 @@ env.hosts = [
 ]
 env.password = '123456'
 
+def test_one():
+	run('cat /etc/issue')

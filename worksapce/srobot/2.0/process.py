@@ -33,7 +33,7 @@ def handle_processid(client,cmdprocess = 'java -jar'):
 
 
 #安装jar包(cawler,manager,web)
-def update_jar(client,env,crawler_url,manager_url,web_url):
+def update_jar(client,env,crawler_url,manager_url,server_url,web_url):
 	cmds = [
 		'cd /root/srobot/jar/'
 	]
@@ -41,6 +41,7 @@ def update_jar(client,env,crawler_url,manager_url,web_url):
 
 	UPDATE_CRAWLER = False 
 	UPDATE_MANAGER = False
+	UPDATE_SERVER  = False
 	UPDATE_WEB 	   = False
 	if crawler_url != None and crawler_url != '':
 		UPDATE_CRAWLER = True
@@ -53,14 +54,20 @@ def update_jar(client,env,crawler_url,manager_url,web_url):
 		handle_processid(client,'java -jar manager')	#杀死客户经理端
 		cmds.append('rm -rf manager.jar')
 		cmds.append('wget -O manager.jar '+ manager_url)
+
+	if server_url != None and server_url != '':
+		UPDATE_SERVER = True
+		handle_processid(client,'java -jar server')		#杀死后台管理系统端
+		cmds.append('rm -rf server.jar')
+		cmds.append('wget -O server.jar '+ server_url)
 		
 	if web_url != None and web_url != '':
 		UPDATE_WEB = True
-		handle_processid(client,'java -jar web')		#杀死后台管理系统端
+		handle_processid(client,'java -jar web')		#杀死web端
 		cmds.append('rm -rf web.jar')
 		cmds.append('wget -O web.jar '+ web_url)
 
-	if UPDATE_CRAWLER == False and UPDATE_MANAGER == False and UPDATE_WEB == False:
+	if UPDATE_CRAWLER == False and UPDATE_MANAGER == False and UPDATE_SERVER == False and UPDATE_WEB == False:
 		print '不需要更新'
 		return
 	
@@ -69,10 +76,10 @@ def update_jar(client,env,crawler_url,manager_url,web_url):
 	print stdot.read()
 	print 'jar 下载成功'
 	#启动项目
-	start_process(client,env,UPDATE_CRAWLER,UPDATE_MANAGER,UPDATE_WEB)
+	start_process(client,env,UPDATE_CRAWLER,UPDATE_MANAGER,UPDATE_SERVER,UPDATE_WEB)
 
 #启动项目
-def start_process(client,env = 'dev',UPDATE_CRAWLER = False,UPDATE_MANAGER = False,UPDATE_WEB = False):
+def start_process(client,env = 'dev',UPDATE_CRAWLER = False,UPDATE_MANAGER = False,UPDATE_SERVER = False ,UPDATE_WEB = False):
 	print '开始启动 jar'
 	cddir = 'cd /root/srobot/jar/'
 
@@ -83,6 +90,10 @@ def start_process(client,env = 'dev',UPDATE_CRAWLER = False,UPDATE_MANAGER = Fal
 	if UPDATE_MANAGER:
 		manager_cmd = cddir + ";" + 'nohup java -jar -Dspring.profiles.active=%s manager.jar &' % (env)
 		client.exec_command(manager_cmd)
+
+	if UPDATE_SERVER:
+		server_cmd  = cddir + ";" + 'nohup java -jar -Dspring.profiles.active=%s server.jar &' % (env)
+		client.exec_command(server_cmd)
 
 	if UPDATE_WEB:
 		web_cmd 	= cddir + ";" + 'nohup java -jar -Dspring.profiles.active=%s web.jar &' % (env)
@@ -112,6 +123,7 @@ def main(config = None):
 	env 		= config['env']
 	crawler_url = config['crawler_url']
 	manager_url = config['manager_url']
+	server_url  = config['server_url']
 	web_url 	= config['web_url']
 	html_url 	= config['html_url']
 
@@ -124,6 +136,6 @@ def main(config = None):
 		if client == None:
 			continue
 		update_html(client,html_url)
-		update_jar(client,env,crawler_url,manager_url,web_url)
+		update_jar(client,env,crawler_url,manager_url,server_url,web_url)
 		ssh.close_client(client)
 		print hostname + ' 部署完成'
