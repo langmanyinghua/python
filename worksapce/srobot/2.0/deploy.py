@@ -65,29 +65,24 @@ def install_nginx(client,version = CONTOS6):
 	cmd = 'yum -y install nginx.x86_64'
 	stdin, stdot, stderr = client.exec_command(cmd)
 	print stdot.read()
-	if len(stderr.read()) <= 0:
-		print 'ngixn 安装成功'
+	print 'ngixn 安装成功'
 
-		#替换配置文件nginx.conf
-		cmd = 'rm -rf /etc/nginx/nginx.conf'
-		client.exec_command(cmd)
+	#替换配置文件nginx.conf
+	cmd = 'rm -rf /etc/nginx/nginx.conf'
+	client.exec_command(cmd)
 
-		cmd = 'wget -P /etc/nginx http://srobot.oss-cn-hangzhou.aliyuncs.com/deploy/nginx.conf'
-		stdin, stdot, stderr = client.exec_command(cmd)
-		print stdot.read()
-		if len(stderr.read()) <= 0:
-			print '替换成功'
+	cmd = 'wget -P /etc/nginx http://srobot.oss-cn-hangzhou.aliyuncs.com/deploy/nginx.conf'
+	stdin, stdot, stderr = client.exec_command(cmd)
+	print stdot.read()
 
-			#启动nginx
-			client.exec_command('nginx')
-			print 'nginx 启动成功'
+	cmd = 'nginx'
+	stdin, stdot, stderr = client.exec_command(cmd)
+	print stdot.read()
 
-		# 开机启动
-		cmd = 'chkconfig nginx on'
-		print 'nginx 开机启动成功'
+	cmd = 'chkconfig nginx on'
+	stdin, stdot, stderr = client.exec_command(cmd)
+	print stdot.read()
 
-	else:
-		print 'ngixn 安装失败'
 
 #安装FFmpeg
 #centos7 
@@ -139,6 +134,7 @@ def install_zip_unzip(client):
 	cmd = 'yum -y install zip unzip'
 	stdin, stdot, stderr = client.exec_command(cmd)
 	print stdot.read()
+	print stderr.read();
 	if len(stderr.read()) <= 0:
 		print 'zip and unzip 安装成功'
 	else:

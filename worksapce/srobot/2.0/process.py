@@ -8,7 +8,7 @@ def kill_process(client,pid):
 	print 'kill '+pid +' success '
 
 #获取进程id
-def handle_processid(client,cmdprocess = 'java -jar'):
+def handle_processid(client,cmdprocess):
 	cmd = 'ps aux|grep java'
 	stdin, stdot, stderr = client.exec_command(cmd)
 	list = stdot.readlines()
@@ -27,10 +27,9 @@ def handle_processid(client,cmdprocess = 'java -jar'):
 			line.append(cmds)
 
 		cmd = line[len(line)-1]
-		if cmd.startswith(cmdprocess):
+		if cmd.find('java -jar') > -1 and cmd.find(cmdprocess) > -1:
 			pid = line[1]
 			kill_process(client,pid)
-
 
 #安装jar包(cawler,manager,web)
 def update_jar(client,env,crawler_url,manager_url,server_url,web_url):
@@ -45,26 +44,26 @@ def update_jar(client,env,crawler_url,manager_url,server_url,web_url):
 	UPDATE_WEB 	   = False
 	if crawler_url != None and crawler_url != '':
 		UPDATE_CRAWLER = True
-		handle_processid(client,'java -jar crawler')	#杀死robot端
-		cmds.append('rm -rf crawler.jar')
+		handle_processid(client,'crawler')	#杀死robot端
+		cmds.append('rm -rf crawler*.jar')
 		cmds.append('wget -O crawler.jar '+ crawler_url)
 		
 	if manager_url != None and manager_url != '':
 		UPDATE_MANAGER = True
-		handle_processid(client,'java -jar manager')	#杀死客户经理端
-		cmds.append('rm -rf manager.jar')
+		handle_processid(client,'manager')	#杀死客户经理端
+		cmds.append('rm -rf manager*.jar')
 		cmds.append('wget -O manager.jar '+ manager_url)
 
 	if server_url != None and server_url != '':
 		UPDATE_SERVER = True
-		handle_processid(client,'java -jar server')		#杀死后台管理系统端
-		cmds.append('rm -rf server.jar')
+		handle_processid(client,'server')	#杀死后台管理系统端
+		cmds.append('rm -rf server*.jar')
 		cmds.append('wget -O server.jar '+ server_url)
 		
 	if web_url != None and web_url != '':
 		UPDATE_WEB = True
-		handle_processid(client,'java -jar web')		#杀死web端
-		cmds.append('rm -rf web.jar')
+		handle_processid(client,'web')		#杀死web端
+		cmds.append('rm -rf web*.jar')
 		cmds.append('wget -O web.jar '+ web_url)
 
 	if UPDATE_CRAWLER == False and UPDATE_MANAGER == False and UPDATE_SERVER == False and UPDATE_WEB == False:
@@ -103,8 +102,8 @@ def start_process(client,env = 'dev',UPDATE_CRAWLER = False,UPDATE_MANAGER = Fal
 
 # 更新网页端
 def update_html(client,html_url):
+	print '更新后台管理系统界面'
 	if html_url == None or html_url == '':
-		print 'vue 下载地址为空'
 		return
 	cmds = [
 		'cd /home/www/',
